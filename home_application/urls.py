@@ -1,0 +1,14 @@
+# -*- coding: utf-8 -*-
+
+from django.conf.urls import patterns
+
+urlpatterns = patterns('home_application.views',
+    (r'^$', 'home'),
+    (r'^dev-guide/$', 'dev_guide'),
+    (r'^contactus/$', 'contactus'),
+    (r'^my_page/$', 'my_page'),
+    (r'^my_page_create/$', 'my_page_create'),
+(r'^get/$', 'get'),
+(r'^deleteU/$', 'deleteU'),
+(r'^helloworld/$','helloworld'),
+)

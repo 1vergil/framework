@@ -1,0 +1,90 @@
+<%inherit file="/base.html"/>
+
+<%block name="content">
+
+    <div style="margin-top: 10px;margin-left: 10px;">
+        <!-- 内容 start-->
+        <!--comtactus-detail -->
+        <div>
+            <button  onclick="create()">添加</button>
+          姓名： <input id="name"/>  年龄： <input id="age" />
+             <button  onclick="get()">查询</button>
+        </div>
+        <script>
+            function get() {
+                $.post("../get/",{accoount:""},
+                function (result) {
+                   var tbodyHtml='';
+                    result=JSON.parse(result);
+                    for(var i=0;i<result.length;i++)
+                    {
+                    var rowHtml = "<tr>" +
+                "<td style=''>" + result[i].fields.account + "</td>" +
+                "<td style=''>" + result[i].fields.age + "</td>" +
+                "<td style='text-align: center;center;cursor: '>" +
+                     "<span style='margin-right: 10px;text-align: center;center;cursor: pointer;color: blue' id='"+result[i].pk+"'  onclick='deleteU("+result[i].pk+")'>删除</span>" +
+                "</td>" +
+                "</tr>";
+                tbodyHtml += rowHtml;
+
+                    }
+                  $("#requisitions").html(tbodyHtml);
+                }).fail(function () {
+
+               }).always(function () {
+
+               });
+            };
+             function deleteU(idT) {
+                 var request={};
+                request.id=idT;
+                 $.ajax({
+        type: 'POST',
+        url: "../deleteU/",
+        data: JSON.stringify(request),
+        contentType: 'application/json',
+        success: function (result) {
+          get();
+        },
+        dataType: 'json',
+        complete: function () {  get();},
+        error: function () {   get();}
+    });
+            };
+            function create(){
+                var request={};
+                request.account=$("#name").val();
+                 request.age=$("#age").val();
+                 $.ajax({
+        type: 'POST',
+        url: "../my_page_create/",
+        data: JSON.stringify(request),
+        contentType: 'application/json',
+        success: function (result) {
+
+        },
+        dataType: 'json',
+        complete: function () {},
+        error: function () { }
+    });
+             };
+
+
+        </script>
+        <div style="height: 500px; overflow: auto;margin-top:10px;">
+    <table  style="width: 100%;">
+        <tr style="background: #eee">
+            <th style="width: 30%;text-align: center">姓名</th>
+            <th style="width: 30%;text-align: center">年龄</th>
+            <th style="text-align: center;">操作</th>
+        </tr>
+        <tbody id="requisitions">
+
+        </tbody>
+    </table>
+</div>
+    </div>
+</%block>
+<%block name='footerline'>
+    <hr class="guide-cutting-line">
+</%block>
